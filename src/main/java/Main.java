@@ -33,6 +33,7 @@ public class Main {
           String serializeResponse = ClientRequestHandler.sendResponse(clientRequest.getCommand()).serialize();
           writer.print(serializeResponse);
           writer.close();
+          System.out.println("Program exited successfully!");
         } catch (IOException e) {
           System.out.println("IOException: " + e.getMessage());
         } catch (Exception e)
