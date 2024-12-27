@@ -1,6 +1,11 @@
-import java.io.IOException;
+import handler.client.ClientRequest;
+import handler.client.ClientRequestHandler;
+import handler.server.ServerResponse;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Main {
   public static void main(String[] args){
@@ -8,7 +13,7 @@ public class Main {
     System.out.println("Logs from your program will appear here!");
 
     //  Uncomment this block to pass the first stage
-        ServerSocket serverSocket = null;
+        ServerSocket serverSocket;
         Socket clientSocket = null;
         int port = 6379;
         try {
@@ -18,8 +23,21 @@ public class Main {
           serverSocket.setReuseAddress(true);
           // Wait for connection from client.
           clientSocket = serverSocket.accept();
+          System.out.println("Client connected!");
+
+          ClientRequest clientRequest = ClientRequestHandler.deserialize(clientSocket.getInputStream());
+
+          OutputStream output = clientSocket.getOutputStream();
+          PrintWriter writer = new PrintWriter(output, true);
+
+          String serializeResponse = ClientRequestHandler.sendResponse(clientRequest.getCommand()).serialize();
+          writer.print(serializeResponse);
+          writer.close();
         } catch (IOException e) {
           System.out.println("IOException: " + e.getMessage());
+        } catch (Exception e)
+        {
+          throw new RuntimeException(e);
         } finally {
           try {
             if (clientSocket != null) {
