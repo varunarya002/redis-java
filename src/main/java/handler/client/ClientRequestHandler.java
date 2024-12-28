@@ -35,8 +35,9 @@ public class ClientRequestHandler
         ClientRequest clientRequest = ClientRequest.builder().withCommand(message).withArguments(new ArrayList<>()).build();
         String serializeResponse = this.sendResponse(clientRequest.getCommand()).serialize();
         output.write(serializeResponse.getBytes());
-        output.close();
       }
+
+      output.close();
     } catch (Exception e) {
       System.out.println("ERROR: " + e.getMessage());
     }
