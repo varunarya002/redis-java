@@ -1,41 +1,37 @@
-import handler.client.ClientRequestHandler;
+import handler.event_loop.EventLoop;
 
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
 
 public class Main {
+  static int PORT = 6379;
   public static void main(String[] args){
-    // You can use print statements as follows for debugging, they'll be visible when running tests.
     System.out.println("Logs from your program will appear here!");
 
-    //  Uncomment this block to pass the first stage
-        ServerSocket serverSocket;
-        Socket clientSocket = null;
-        int port = 6379;
-        try {
-          serverSocket = new ServerSocket(port);
-          // Since the tester restarts your program quite often, setting SO_REUSEADDR
-          // ensures that we don't run into 'Address already in use' errors
-          serverSocket.setReuseAddress(true);
-          // Wait for connection from client.
-          clientSocket = serverSocket.accept();
-          ClientRequestHandler clientRequestHandler = new ClientRequestHandler(clientSocket);
-          clientRequestHandler.run();
-          System.out.println("Program exited successfully!");
-        } catch (IOException e) {
-          System.out.println("IOException: " + e.getMessage());
-        } catch (Exception e)
-        {
-          throw new RuntimeException(e);
-        } finally {
-          try {
-            if (clientSocket != null) {
-              clientSocket.close();
-            }
-          } catch (IOException e) {
-            System.out.println("IOException: " + e.getMessage());
-          }
-        }
+    try (ServerSocketChannel serverChannel = ServerSocketChannel.open()) {
+      serverChannel.configureBlocking(false);
+      serverChannel.bind(new InetSocketAddress(PORT));
+
+      Selector selector = Selector.open();
+      // Register the server channel with the selector to accept connections
+      serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+      System.out.println("Server started. Listening on port " + PORT);
+
+      EventLoop eventLoop = new EventLoop(selector);
+      eventLoop.start();
+
+    } catch (IOException e)
+    {
+      throw new RuntimeException(e);
+    } catch (Exception e)
+    {
+      throw new RuntimeException(e);
+    } finally
+    {
+
+    }
   }
 }

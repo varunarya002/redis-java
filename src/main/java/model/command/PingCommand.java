@@ -15,7 +15,7 @@ public class PingCommand extends BaseCommand
   }
 
   @Override
-  public ServerResponse execute()
+  public ServerResponse<String> execute()
   {
     return new ServerResponse<>(payload, stringProtocol);
   }
