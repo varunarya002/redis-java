@@ -1,6 +1,5 @@
 import handler.event_loop.EventLoop;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -23,15 +22,9 @@ public class Main {
       EventLoop eventLoop = new EventLoop(selector);
       eventLoop.start();
 
-    } catch (IOException e)
-    {
-      throw new RuntimeException(e);
     } catch (Exception e)
     {
       throw new RuntimeException(e);
-    } finally
-    {
-
     }
   }
 }
