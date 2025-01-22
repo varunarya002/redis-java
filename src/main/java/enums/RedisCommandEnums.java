@@ -1,6 +1,7 @@
 package enums;
 
 import model.command.BaseCommand;
+import model.command.EchoCommand;
 import model.command.PingCommand;
 
 import java.util.Objects;
@@ -12,6 +13,13 @@ public enum RedisCommandEnums
     BaseCommand getInstance()
     {
       return new PingCommand();
+    }
+  },
+  ECHO("ECHO") {
+    @Override
+    BaseCommand getInstance()
+    {
+      return new EchoCommand();
     }
   };
 
@@ -25,9 +33,7 @@ public enum RedisCommandEnums
   {
     for (RedisCommandEnums command : RedisCommandEnums.values()) {
       if (Objects.equals(command.name, commandName)) {
-        BaseCommand commandInstance = command.getInstance();
-        commandInstance.validate();
-        return commandInstance;
+        return command.getInstance();
       }
     }
 

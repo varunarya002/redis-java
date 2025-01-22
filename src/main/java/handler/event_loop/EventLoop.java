@@ -3,12 +3,10 @@ package handler.event_loop;
 import handler.client.ClientRequestHandler;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 public class EventLoop
@@ -54,25 +52,7 @@ public class EventLoop
 
   private void handleRead(SelectionKey key) throws Exception
   {
-    SocketChannel clientChannel = (SocketChannel) key.channel();
-    ByteBuffer buffer = ByteBuffer.allocate(1024);
-    StringBuilder messageBuilder = new StringBuilder();
-
-    while (clientChannel.read(buffer) > 0) {
-      buffer.flip();
-      while (buffer.hasRemaining()) {
-        char ch = (char) buffer.get();
-        if (ch == '\n') {
-          String response = ClientRequestHandler.processMessage(messageBuilder.toString().trim());
-          if (response != null) {
-            clientChannel.write(ByteBuffer.wrap(response.getBytes(StandardCharsets.UTF_8)));
-          }
-          messageBuilder.setLength(0);
-        } else {
-          messageBuilder.append(ch);
-        }
-      }
-      buffer.clear();
-    }
+    ClientRequestHandler clientRequestHandler = new ClientRequestHandler((SocketChannel) key.channel());
+    clientRequestHandler.run();
   }
 }

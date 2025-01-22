@@ -2,9 +2,9 @@ package model.command;
 
 import handler.server.ServerResponse;
 
-public abstract class BaseCommand
-{
-  public abstract void validate() throws Exception;
+import java.util.List;
 
-  public abstract ServerResponse execute();
+public abstract class BaseCommand<T>
+{
+  public abstract ServerResponse<T> execute(List<String> arguments);
 }

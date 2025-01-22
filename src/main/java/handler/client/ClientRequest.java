@@ -1,14 +1,16 @@
 package handler.client;
 
 import enums.RedisCommandEnums;
+import handler.server.ServerResponse;
 import model.command.BaseCommand;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientRequest
 {
   private BaseCommand command;
-  private ArrayList<String> arguments;
+  private List<String> arguments;
 
   private ClientRequest(Builder builder)
   {
@@ -20,14 +22,13 @@ public class ClientRequest
     return new Builder();
   }
 
-  public BaseCommand getCommand()
-  {
-    return command;
+  public ServerResponse execute() {
+    return command.execute(arguments);
   }
 
   public static class Builder {
     private BaseCommand command;
-    private ArrayList<String> arguments = new ArrayList<>();
+    private List<String> arguments = new ArrayList<>();
 
     public Builder withCommand(String command) throws Exception
     {
@@ -41,7 +42,7 @@ public class ClientRequest
       return this;
     }
 
-    public Builder withArguments(ArrayList<String> arguments)
+    public Builder withArguments(List<String> arguments)
     {
       this.arguments = arguments;
       return this;

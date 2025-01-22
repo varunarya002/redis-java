@@ -2,18 +2,18 @@ package model.command;
 
 import handler.server.ServerResponse;
 import model.protocol.BaseProtocol;
-import model.protocol.SimpleStringProtocol;
+import model.protocol.BulkStringProtocol;
 
 import java.util.List;
 
-public class PingCommand extends BaseCommand<String>
+public class EchoCommand extends BaseCommand<String>
 {
-  private String payload = "PONG";
-  private final BaseProtocol<String> stringProtocol = new SimpleStringProtocol();
+  private final BaseProtocol<String> stringProtocol = new BulkStringProtocol();
 
   @Override
   public ServerResponse<String> execute(List<String> arguments)
   {
+    String payload = String.join(",", arguments);
     return new ServerResponse<>(payload, stringProtocol);
   }
 }
