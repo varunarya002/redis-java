@@ -2,14 +2,14 @@ package handler.client;
 
 import enums.RedisCommandEnums;
 import handler.server.ServerResponse;
-import model.command.BaseCommand;
+import handler.command.BaseCommandHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientRequest
 {
-  private BaseCommand command;
+  private BaseCommandHandler command;
   private List<String> arguments;
 
   private ClientRequest(Builder builder)
@@ -27,7 +27,7 @@ public class ClientRequest
   }
 
   public static class Builder {
-    private BaseCommand command;
+    private BaseCommandHandler command;
     private List<String> arguments = new ArrayList<>();
 
     public Builder withCommand(String command) throws Exception

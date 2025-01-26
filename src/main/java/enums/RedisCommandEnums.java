@@ -1,8 +1,9 @@
 package enums;
 
-import model.command.BaseCommand;
-import model.command.EchoCommand;
-import model.command.PingCommand;
+import handler.command.*;
+import handler.storage.StorageHandler;
+import model.protocol.BulkStringProtocol;
+import model.protocol.SimpleStringProtocol;
 
 import java.util.Objects;
 
@@ -10,26 +11,40 @@ public enum RedisCommandEnums
 {
   PING("PING") {
     @Override
-    BaseCommand getInstance()
+    BaseCommandHandler getInstance()
     {
-      return new PingCommand();
+      return new PingCommandHandler(new SimpleStringProtocol());
     }
   },
   ECHO("ECHO") {
     @Override
-    BaseCommand getInstance()
+    BaseCommandHandler getInstance()
     {
-      return new EchoCommand();
+      return new EchoCommandHandler(new BulkStringProtocol());
+    }
+  },
+  SET("SET") {
+    @Override
+    BaseCommandHandler getInstance()
+    {
+      return new SetCommandHandler(new SimpleStringProtocol(),new StorageHandler());
+    }
+  },
+  GET("GET") {
+    @Override
+    BaseCommandHandler getInstance()
+    {
+      return new GetCommandHandler(new BulkStringProtocol(), new StorageHandler());
     }
   };
 
-  private String name;
+  private final String name;
   RedisCommandEnums(String name)
   {
     this.name = name;
   }
 
-  public static BaseCommand from(String commandName) throws Exception
+  public static BaseCommandHandler from(String commandName) throws Exception
   {
     for (RedisCommandEnums command : RedisCommandEnums.values()) {
       if (Objects.equals(command.name, commandName)) {
@@ -40,5 +55,5 @@ public enum RedisCommandEnums
     throw new Exception("Command: " + commandName + " is not a valid command.");
   }
 
-  abstract BaseCommand getInstance();
+  abstract BaseCommandHandler getInstance();
 }

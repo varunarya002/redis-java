@@ -6,6 +6,7 @@ public class BulkStringProtocol extends BaseProtocol<String>
   @Override
   public String serialize(String payload)
   {
-    return "$" + payload.length() + CRLF + payload + CRLF;
+    int payLoadLength = !payload.isEmpty() ? payload.length() : -1;
+    return "$" + payLoadLength + CRLF + payload + CRLF;
   }
 }
