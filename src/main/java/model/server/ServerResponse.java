@@ -1,4 +1,4 @@
-package handler.server;
+package model.server;
 
 import model.protocol.BaseProtocol;
 

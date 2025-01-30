@@ -1,6 +1,6 @@
 package handler.command;
 
-import handler.server.ServerResponse;
+import model.server.ServerResponse;
 import model.protocol.BaseProtocol;
 
 import java.util.List;

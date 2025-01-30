@@ -1,5 +1,6 @@
-package storage;
+package model.storage;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryStorage<K, V> extends Storage<K, V>
@@ -19,5 +20,17 @@ public class InMemoryStorage<K, V> extends Storage<K, V>
       return DATA_STORAGE.get(key);
     }
     return null;
+  }
+
+  @Override
+  public void remove(K key)
+  {
+    DATA_STORAGE.remove(key);
+  }
+
+  @Override
+  public List<K> getAllKeys()
+  {
+    return DATA_STORAGE.keySet().stream().toList();
   }
 }

@@ -1,7 +1,7 @@
 package handler.client;
 
 import enums.RedisCommandEnums;
-import handler.server.ServerResponse;
+import model.server.ServerResponse;
 import handler.command.BaseCommandHandler;
 
 import java.util.ArrayList;

@@ -27,7 +27,7 @@ public enum RedisCommandEnums
     @Override
     BaseCommandHandler getInstance()
     {
-      return new SetCommandHandler(new SimpleStringProtocol(),new StorageHandler());
+      return new SetCommandHandler(new SimpleStringProtocol(), new StorageHandler());
     }
   },
   GET("GET") {

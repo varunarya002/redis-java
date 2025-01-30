@@ -1,6 +1,6 @@
 package handler.command;
 
-import handler.server.ServerResponse;
+import model.server.ServerResponse;
 import model.protocol.BaseProtocol;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public abstract class BaseCommandHandler<T>
   }
 
   protected ServerResponse<T> buildResponse(T payload) {
-    return (ServerResponse<T>) ServerResponse.builder().withPayload(payload).withProtocol(protocol).build();
+    return ServerResponse.<T>builder().withPayload(payload).withProtocol(protocol).build();
   }
 
   public abstract ServerResponse<T> execute(List<String> arguments);
